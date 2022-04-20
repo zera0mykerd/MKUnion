@@ -11,7 +11,7 @@ A plugin for management servers
 - Mklag command for server lag monitoring
 - Autokill arrows on terrain
 - Simple setspawn and spawn teleport
-- Autofix log4j RCE exploit (packet and chat mode)
+- Autofix log4j RCE exploit (packet[Protocollib required] and chat mode)
 - On join spawn firework
 - On kill firework
 - On kill ghast scream and spawn thunder
