@@ -1,0 +1,37 @@
+Config:
+  CC:
+    message: ''
+  ICC:
+    message: ''
+  permissions:
+    message: '&8&l(&0&l!&8&l) &1&l&o» &7&oAccesso negato al comando.'
+# Configuration regarding logging of malicious messages
+# Malicious messages will not be logged using log4j. They are
+# written without any further processing to a separate log-file
+logging:
+  enabled: false
+  # Whether to log malicious messages that were caught in the Log4J Log Filter
+  logFilter: true
+  # Whether to log malicious messages (e.g. chat) that were received by players
+  messageReceive: true
+  # Whether to log malicious messages that would have been sent to players.
+  # Note that this will spam the log files, as the detection of those messages happens at the networking layer.
+  # Meaning that one log entry will be created per player receiving the message.
+  messageSend: true
+  # The configuration of a custom path is optional. By default, logs will be stored in the "logs" subdirectory
+  # of the configuration directory of this plugin (the directory, that this file resides in).
+  # path: /some/custom/path
+  
+
+# Cooldown pearl duration in seconds
+duration: 10
+
+# This message will be sent when a player tries to throw an ender pearl while he is on cooldown
+# %time% will be replaced by the number of seconds left
+# Set to two " marks to turn this feature off ("")
+message: "&3&l(&0&l!&3&l) &1&oAttendi &b&l%time% &1&osecondi..."
+
+#sound: ""
+
+MkConfig: true
+
