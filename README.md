@@ -18,3 +18,4 @@ A plugin for management servers
 - Autospawn + autoclean potion and inventory
 - Vault protection
 - Togglebuild for operators (enable and disable build) prevent accidentally break
+- Fix Bow punch
