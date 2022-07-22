@@ -13,6 +13,8 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -30,6 +32,7 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.bukkit.entity.Entity;
@@ -85,6 +88,9 @@ import org.bukkit.util.Vector;
 import mykerd.Main;
 
 public class Main extends JavaPlugin implements Listener {
+	  File reports = new File("plugins/MKUnion/reports.yml");
+	  
+	  YamlConfiguration yamlFile = YamlConfiguration.loadConfiguration(this.reports);
 	//Main plugin;
 	FileConfiguration config = getConfig();
 	//public void saveDefaultConfig() {
@@ -190,6 +196,8 @@ public class Main extends JavaPlugin implements Listener {
 		    getCommand("fix").setExecutor(new Fix(this));
 		    getCommand("setspawn").setExecutor(new SimpleSpawn(this));
 		    getCommand("spawn").setExecutor(new SimpleSpawn(this));
+		    getCommand("report").setExecutor(new SimpleReport(this));
+		    getCommand("reports").setExecutor(new SimpleReport(this));
 		    //getCommand("togglebreak").setExecutor(new Main(this));
 		    //getCommand("toggleplace").setExecutor(new Main(this));
 		    //getCommand("togglebuild").setExecutor(new Main(this));
@@ -211,6 +219,7 @@ public class Main extends JavaPlugin implements Listener {
 		   // this.sound = config.getString("sound");
 		    this.message = ChatColor.translateAlternateColorCodes('&', config.getString("message"));
 		    this.cooldowns = new HashMap<>();
+		    YamlConfiguration.loadConfiguration(this.reports);
 		    pl = this;
 		    //this.protocolManager.addPacketListener((PacketListener)new PacketAdapter((Plugin)this, ListenerPriority.LOWEST, new PacketType[] { PacketType.Play.Server.CHAT, PacketType.Play.Client.CHAT }));
 	  }
@@ -799,6 +808,11 @@ public class Main extends JavaPlugin implements Listener {
 		    getConfig().set("playersCannotBuild", this.playersCannotBuild);
 		    getConfig().set("playersCannotPlace", this.playersCannotPlace);
 		    getConfig().set("playersCannotBreak", this.playersCannotBreak);
+		    try {
+		        this.yamlFile.save("plugins/SimpleReport/reports.yml");
+		      } catch (IOException e) {
+		        e.printStackTrace();
+		      } 
 		    if (this.logManager != null)
 		        this.logManager.stop(); 
 		    saveConfig();
