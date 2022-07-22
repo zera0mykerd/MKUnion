@@ -31,6 +31,10 @@ commands:
     description: Set as spawn.
  spawn:
     description: Go to spawn.
+ report:
+    description: Report a player for a reason.
+ reports:
+    description: View the reports people put in.
  #toggleplace:
  #   description: Disable/enable the placing of blocks for yourself.
  #togglebreak:
