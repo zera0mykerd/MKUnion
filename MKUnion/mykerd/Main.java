@@ -83,6 +83,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
 import org.bukkit.util.Vector;
+import org.bukkit.Effect;
+import org.bukkit.World;
 
 
 import mykerd.Main;
@@ -704,6 +706,22 @@ public class Main extends JavaPlugin implements Listener {
 	  public void onBlockBreak(BlockBreakEvent e) {
 	    if (this.playersCannotBuild.contains(e.getPlayer().getUniqueId().toString()) || this.playersCannotBreak.contains(e.getPlayer().getUniqueId().toString()))
 	      e.setCancelled(true); 
+	  }
+	  
+	  
+	  
+	  
+	  //Make blood particles
+	  
+	  @EventHandler
+	  public void bloodEffect(EntityDamageEvent event) {
+	    if (event.getEntity() instanceof Player) {
+	      Player player = (Player)event.getEntity();
+	      Location loc = player.getLocation();
+	      World world = loc.getWorld();
+	      world.playEffect(loc, Effect.MAGIC_CRIT, -10);
+	      world.playEffect(loc.add(0.0D, 0.8D, 0.0D), Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
+	    } 
 	  }
 	  
 	  
