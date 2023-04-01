@@ -1,8 +1,0 @@
-/**
- * 
- */
-/**
- * @author miche
- *
- */
-package mykerd;
