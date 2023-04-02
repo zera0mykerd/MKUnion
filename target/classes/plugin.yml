@@ -1,0 +1,65 @@
+name: MKUnion
+main: mykerd.Main
+version: 3.0
+description: Union of many plugins
+author: zera_mykerd
+website: www.mineset.altervista.org
+
+commands:
+ fix:
+  description: This Command For Fix.
+ cc:
+    description: Clean the Chat.
+    usage: /<command>
+ icc:
+    desccription: Clean your own Chat.
+    usage: /<command>
+ seacb:
+     description: Main command.
+ stats:
+    description: send stats anywhere!
+    aliases: [statistiche,statistica,progressi]
+ recover:
+    description: Recovers recently lost items.
+ killer:
+    description: Displays the players last killer.
+ mklag:
+    description: See the lag on the server.
+ togglebuild:
+    description: Disable/enable the breaking & placing of blocks for yourself.
+ setspawn:
+    description: Set as spawn.
+ spawn:
+    description: Go to spawn.
+ #toggleplace:
+ #   description: Disable/enable the placing of blocks for yourself.
+ #togglebreak:
+ #   description: Disable/enable the breaking of blocks for yourself.
+
+ permissions:
+    fix.use:
+        description: fix you.
+        default: true
+    instantItems.use:
+        description: take items.
+        default: true
+    disablebuild.togglebuild:
+    children:
+      - disablebuild.toggleplace
+      - disablebuild.togglebreak
+    enderpearl.bypass: 
+        description: bypass cooldown pearl.
+    default: op
+    simplespawn.setspawn:
+        description: set as spawn.
+        default: op
+    simplespawn.spawn:
+        description: go to spawn
+        default: true
+ #   disablebuild.toggleplace:
+ #       description: Allows you to disable/enable the placing of blocks for yourself.
+ #       default: op
+ #   disablebuild.togglebreak:
+ #       description: Allows you to disable/enable the breaking of blocks for yourself.
+ #       default: op
+

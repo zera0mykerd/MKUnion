@@ -5,6 +5,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
 import org.bukkit.plugin.java.JavaPlugin;
+//import org.bukkit.potion.Potion;
+//import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -39,15 +41,20 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.Color;
+import org.bukkit.Effect;
 import org.bukkit.FireworkEffect;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Firework;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.Sound;
+import org.bukkit.World;
+
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
@@ -80,6 +87,11 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
 import org.bukkit.util.Vector;
+
+//import java.util.logging.Level;
+
+
+
 
 
 import mykerd.Main;
@@ -751,19 +763,151 @@ public class Main extends JavaPlugin implements Listener {
 		    return falling;
 		  }
 	  
+
+	  //Make blood particles
+	  
+	  @EventHandler
+	  public void bloodEffect(EntityDamageEvent event) {
+	    if (event.getEntity() instanceof Player) {
+	      Player player = (Player)event.getEntity();
+	      Location loc = player.getLocation();
+	      World world = loc.getWorld();
+	      world.playEffect(loc, Effect.MAGIC_CRIT, -10);
+	      world.playEffect(loc.add(0.0D, 0.8D, 0.0D), Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
+	    } 
+	  }
+	  
+	  //Remove in air command execution
+	  
 	  @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	  public void beforeCommand(PlayerCommandPreprocessEvent e) {
 	    Player player = e.getPlayer();
 	    if (isFalling(player) && (e.getMessage().startsWith("/"))) {
 	    		   e.setCancelled(true);
-	    		      player.sendMessage("§4§oNon puoi eseguire comandi in aria!");
+	    		   player.damage(15.0D);
+	    		   player.setFallDistance(9);
+	    		   player.closeInventory();
+	    		   player.setLastDamage(2);
+	    		   player.sendMessage("§6§l (!) §0§l§o» §e§oNon puoi eseguire comandi in aria!");
 	    }
 
 	    	}
+	  
+	  //Organize potion glass bottle on consume
+	  
+//	  @EventHandler
+//	  public void onPotionConsume(PlayerItemConsumeEvent event) {
+//	    ItemStack consumedItem = event.getItem();
+//	    Player player = event.getPlayer();
+//	    if (consumedItem.getType() != Material.POTION)
+//	      return; 
+//	    ItemStack newItem = consumedItem.clone();
+//	    newItem.setAmount(consumedItem.getAmount() - 1);
+//	    player.getInventory().setItemInHand(newItem);
+//	      //return; 
+//	    //event.setCancelled(true);
+//
+//	  }
+	  
+//	  @EventHandler
+//	  public void onConsume(PlayerItemConsumeEvent e) {
+//	    if (!e.getItem().getType().equals(Material.POTION))
+//	      return; 
+//	    Player p = e.getPlayer();
+//	    int heldSlot = p.getInventory().getHeldItemSlot();
+//	    Bukkit.getServer().getScheduler().runTaskLaterAsynchronously((Plugin)this, () -> {
+//	          ItemStack held = p.getInventory().getItem(heldSlot);
+//	          ItemStack off = p.getInventory().getItemInHand();
+//	          if (held != null && held.getType() == Material.GLASS_BOTTLE)
+//	            held.setAmount(0); 
+//	          if (off.getType() == Material.GLASS_BOTTLE)
+//	            off.setAmount(0); 
+//		       else {
+//		        e.getPlayer().setItemInHand(new ItemStack(Material.AIR));
+//		       }
+//	    }
+//	        ,1L);
+//	  }
+	
+	  
+//  @EventHandler
+//	  public void onPlayerInteract1(PlayerInteractEvent e) {
+//    if ((e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) && e.getItem() != null && e.getItem().getType() == Material.POTION) {
+//	      Potion p = Potion.fromItemStack(e.getItem());
+//	      if (p.isSplash())
+//	        return;
+//	      for (PotionEffect effect : e.getPlayer().getActivePotionEffects())
+//	        e.getPlayer().removePotionEffect(effect.getType()); 
+//	      e.getPlayer().addPotionEffects(p.getEffects());
+//	      
+//	      
+//	      if (Bukkit.getVersion().contains("1.10" + "1.11" + "1.12" + "1.13" + "1.14" + "1.15")) {
+//	        e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.valueOf("ENTITY_GENERIC_DRINK"), 1.0F, 1.0F);
+//	      } else {
+//	        e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.valueOf("DRINK"), 1.0F, 1.0F);
+//
+//	        
+//	        
+//	      if (getConfig().getBoolean("bottle")) {
+//	        e.getPlayer().setItemInHand(new ItemStack(Material.GLASS_BOTTLE));
+//	      } else {
+//	        e.getPlayer().setItemInHand(new ItemStack(Material.AIR));
+//	      } 
+//	      
+//	      e.setCancelled(true);
+//	      
+//	      }
+//	    }
+//	      
+//	  }
+	  
+	  @EventHandler
+	    public void onPotionDrink(PlayerItemConsumeEvent event){
+	        Player player = event.getPlayer();
+//	        if(event.getItem().getType() == Material.POTION){
+//	            ItemStack air = new ItemStack(Material.AIR);
+//	            player.setItemInHand(air);
+	        if (player.getInventory().contains(Material.GLASS_BOTTLE)) {
+	        	player.getInventory().remove(Material.GLASS_BOTTLE);
+	        }
+	    }
+	  
+//	   @SuppressWarnings("deprecation")
+//	    @EventHandler
+//	    public void onConsume(PlayerItemConsumeEvent e) {
+//	        final Player player = e.getPlayer();
+//	 
+//	        if (e.getItem().getTypeId() == 373) {
+//	            Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(Class.inst, new Runnable() {
+//	                public void run() {
+//	                    player.setItemInHand(new ItemStack(Material.AIR));
+//	                }
+//	            }, 1L);
+//	        }
+//	    }
+	  
+ 	  //Bottle potion modifier
+	
 
 	  ////public void onBlockPlace(BlockPlaceEvent e) {
 
 	  //}
+	  
+	  
+	  
+	  //Creative enderpearl
+	  
+	  @EventHandler
+	  public void onRightClick(PlayerInteractEvent event) {
+	    Player player = event.getPlayer();
+	    Action action = event.getAction();
+	    if (action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK))
+	      if ((((player.getGameMode() == GameMode.CREATIVE) ? 1 : 0) & ((player.getItemInHand().getType() == Material.ENDER_PEARL) ? 1 : 0)) != 0) {
+	        player.playSound(player.getLocation(), Sound.SHOOT_ARROW, 1.0F, 0.0F);
+	        player.launchProjectile(EnderPearl.class);
+	      }  
+	  }
+	
 	  
 	  public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		    if (!(sender instanceof Player))
